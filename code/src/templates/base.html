@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JO Paris 2024</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/style.css') }}">
+    </head>
+    <nav>
+        <div id="nav_logo">
+            <a href="http://127.0.0.1:5000/">
+                <img id="logo_nav" src="https://upload.wikimedia.org/wikipedia/fr/thumb/6/68/Logo_JO_d%27%C3%A9t%C3%A9_-_Paris_2024.svg/422px-Logo_JO_d%27%C3%A9t%C3%A9_-_Paris_2024.svg.png" alt="logo">  
+            </a>
+        
+        </div>
+        <div id="nav_elements">
+            <a href="http://127.0.0.1:5000/">
+                <p>
+                    Acceuil
+                </p>  
+            </a>
+        
+            <a href="http://127.0.0.1:5000/billets">
+                <p>
+                    Billets
+                </p>  
+            </a>
+            <a href="http://127.0.0.1:5000/sign_in">
+                <p>
+                    Connexion/Inscription
+                </p>  
+            </a>
+            <a href="http://127.0.0.1:5000/cart">
+                <p>
+                    Panier
+                </p>  
+            </a>
+        </div>
+    </nav>
+    <body>
+        <div class="header">
+            <div class="header-image">
+                <img src="https://www.lesoir.be/sites/default/files/mediastore/1689763916_bandeau_article_jo_paris.jpg" alt="bannière jo">
+            </div>
+        </div>
+        {% block body %}{% endblock %}
+    </body>
+    <footer class="olympics-footer">
+        <div class="footer-content">
+            <section class="footer-section">
+                <h4>Contactez-nous</h4>
+                <p>+33 1 23 45 67 89</p>
+                <p>info@jeuxolympiques.fr</p>
+            </section>
+    
+            <section class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="#">À propos des Jeux</a></li>
+                    <li><a href="#">Acheter des billets</a></li>
+                    <li><a href="#">Programme des événements</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </section>
+    
+            <section class="footer-section">
+                <h4>Suivez-nous</h4>
+                <p>Restez connectés pour les mises à jour et les nouvelles</p>
+                <div class="social-icons">
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </section>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2024 Jeux Olympiques. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    {% block script %}{% endblock %}
+</html>
