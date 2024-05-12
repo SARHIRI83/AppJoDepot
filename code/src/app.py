@@ -9,6 +9,7 @@ import string
 import json
 import logging
 
+# Système de Journalisation pour le suivi du comportement de l'application, la détection et la résolution des erreurs
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
@@ -18,7 +19,7 @@ app=Flask(__name__)
 # Configuration des sessions
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SECURE'] = False  # Set to False if you are not using HTTPS
+app.config['SESSION_COOKIE_SECURE'] = False  # Positionner à False si vous n'utilisez pas HTTPS
 app.config['SESSION_USE_SIGNER'] = True
 Session(app)  # Initialiser l'extension Session
 
@@ -30,11 +31,12 @@ def get_db_connection():
         host='localhost',
         dbname='AppJo',
         user='postgres',
-        password='sofyane'
+        password='sofyane',
+        port=5432 #modifiez le port pour qu'il soit le même que le port d'écoute de votre serveur postgre sql local
     )
     return conn
 
-# Génerer une suite caractère alphanumériques aléatoire pour la clé de compte et la clé de transaction
+# Génerer une suite de caractère alphanumériques aléatoire pour la clé de compte et la clé de transaction
 def generate_random_string():
     # Déterminer une longueur aléatoire entre 50 et 100
     length = random.randint(50, 100)
@@ -45,7 +47,7 @@ def generate_random_string():
     
     return random_string
 
-
+# Cette fonction enregistre des informations sur les articles ajoutés au panier d'un utilisateur dans un fichier JSON
 def save_to_cart(user_id, ticket_type, quantity, image_name, description, price, name):
     file_path = 'cart.json'
     if not os.path.exists(file_path):
@@ -75,6 +77,7 @@ def save_to_cart(user_id, ticket_type, quantity, image_name, description, price,
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
 
+# Cette fonction charge les articles du panier d'un utilisateur à partir d'un fichier JSON
 def load_cart_items(user_id):
     try:
         with open('cart.json', 'r') as file:
@@ -84,7 +87,7 @@ def load_cart_items(user_id):
         return []  # Retourne un panier vide si le fichier n'existe pas
     
 
-
+# Cette fonction met à jour les informations du panier d'un utilisateur dans un fichier JSON
 def update_cart_file(user_id, ticket_type, new_quantity, image_name=None, description=None, price=None):
     file_path = 'cart.json'
     # Chargement des données existantes ou initialisation d'un nouveau dictionnaire
@@ -94,7 +97,7 @@ def update_cart_file(user_id, ticket_type, new_quantity, image_name=None, descri
     else:
         data = {}
 
-    # Accéder à la carte de l'utilisateur ou initialiser un nouveau dictionnaire pour cet utilisateur
+    # Accéder au panier de l'utilisateur ou initialiser un nouveau dictionnaire pour cet utilisateur
     user_cart = data.get(user_id, {})
 
     # Mise à jour ou suppression de l'entrée
@@ -138,7 +141,7 @@ def sign_in():
         id=request.cookies.get('user_id')
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute('SELECT firstname, lastname, email FROM utilisateurs WHERE id = %s', (id,))
+        cur.execute('SELECT firstname, lastname, email FROM utilisateurs WHERE user_id = %s', (id,))
         user = cur.fetchone()
         cur.close()
         conn.close()
@@ -195,7 +198,7 @@ def register_user():
     return jsonify(message), status_code
 
 
-
+#Fonction pour gérer une demande de connexion à un compte utilisateur
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -205,7 +208,7 @@ def login():
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    cur.execute('SELECT id, hashed_password, salt FROM utilisateurs WHERE email = %s', (email,))
+    cur.execute('SELECT user_id, hashed_password, salt FROM utilisateurs WHERE email = %s', (email,))
     user = cur.fetchone()
     cur.close()
     conn.close()
@@ -234,21 +237,21 @@ def check_login():
 @app.route('/logout', methods=['GET'])
 def logout():
     resp = make_response(jsonify({'success': True, 'message': 'Déconnexion réussie'}))
-    resp.set_cookie('is_logged_in', '', expires=0)  # Supprimer le cookie
-    resp.set_cookie('user_id', '', expires=0)  # Supprimer le cookie
+    resp.set_cookie('is_logged_in', '', expires=0)  # Supprime le cookie
+    resp.set_cookie('user_id', '', expires=0)  # Supprime le cookie
     return resp
 
-
+  
 @app.route('/change_password', methods=['POST'])
 def change_password():
     data = request.get_json()
-    user_id = request.cookies.get('user_id')  # Supposons que vous avez un user_id dans le cookie
+    user_id = request.cookies.get('user_id')  # Supposons que nous avons un user_id dans le cookie
     current_password = data['currentPassword']
     new_password = data['newPassword']
 
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cur.execute('SELECT hashed_password, salt FROM utilisateurs WHERE id = %s', (user_id,))
+    cur.execute('SELECT hashed_password, salt FROM utilisateurs WHERE user_id = %s', (user_id,))
     user = cur.fetchone()
 
     if user:
@@ -256,7 +259,7 @@ def change_password():
         if current_hashed == user['hashed_password']:
             new_salt = os.urandom(16).hex()
             new_hashed_password = hashlib.sha256(bytes.fromhex(new_salt) + new_password.encode()).hexdigest()
-            cur.execute('UPDATE utilisateurs SET hashed_password = %s, salt = %s WHERE id = %s',
+            cur.execute('UPDATE utilisateurs SET hashed_password = %s, salt = %s WHERE user_id = %s',
                         (new_hashed_password, new_salt, user_id))
             conn.commit()
             message = {'success': True, 'message': 'Mot de passe changé avec succès'}
@@ -273,7 +276,7 @@ def change_password():
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     data = request.get_json()
-    user_id = request.cookies.get('user_id')  # Assurez-vous que l'utilisateur est connecté et a un user_id valide
+    user_id = request.cookies.get('user_id')  # Pour s'assurer que l'utilisateur est connecté et possède un user_id valide
     ticket_type = data['ticketType']
     quantity = data['quantity']
 
