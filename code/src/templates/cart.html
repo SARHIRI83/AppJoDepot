@@ -5,7 +5,7 @@
     <h1>Votre Panier</h1>
     {% if cart_items %}
     <div class="cart-items">
-        {% for ticket_type, item in cart_items.items() %}
+        {% for item in cart_items %}
         <div class="cart-item">
             <div class="item-image">
                 <img src="{{ url_for('static', filename='images/' + item.image_name)}}" alt="{{ item.name }}">

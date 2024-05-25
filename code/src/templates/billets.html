@@ -1,67 +1,26 @@
 {% extends "base.html" %}
-
 {% block body %}
-
-
-
 <div class="tickets-container">
-
-
-  <div class="ticket-item">
+  {% for offer in offers %}
+  <div class="ticket-item" data-id="{{ offer.id }}">
     <div class="ticket-image">
-      <img src="#" alt="Billet Solo">
+      <img src="{{ url_for('static', filename='images/' + offer.image) }}" alt="{{ offer.type }}">
     </div>
     <div class="ticket-content">
-      <h2>Billet solo</h2>
-      <p>Billet à usage unique pour une personne pour n'importe quelle épreuve.</p>
+      <h2>{{ offer.type }}</h2>
+      <p>{{ offer.description }}</p>
     </div>
     <div class="ticket-action">
-      <p class="price">Prix : €50</p>
-      <input id="billet-solo-nb" type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
-      <button class="add-to-cart" onclick="addToCart('Billet solo')">Ajouter au panier</button>
-    </div>
-  </div>
-
-  <div class="ticket-item">
-    <div class="ticket-image">
-      <img src="#" alt="Billet duo">
-    </div>
-    <div class="ticket-content">
-      <h2>Billet duo</h2>
-      <p>Billet pour deux personnes, idéal pour venir en couple ou entre amis.</p>
-    </div>
-    <div class="ticket-action">
-      <p class="price">Prix : €80</p>
+      <p class="price">Prix : €{{ offer.prix }}</p>
       <input type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
-      <button class="add-to-cart" onclick="addToCart('Billet duo')">Ajouter au panier</button>
+      <button class="add-to-cart" onclick="addToCart('{{ offer.type }}')">Ajouter au panier</button>
     </div>
   </div>
-
-  <div class="ticket-item">
-    <div class="ticket-image">
-      <img src="#" alt="Billet Famille">
-    </div>
-    <div class="ticket-content">
-      <h2>Billet famille</h2>
-      <p>Billet familial pour quatre personnes, parfait pour une sortie en famille.</p>
-    </div>
-    <div class="ticket-action">
-      <p class="price">Prix : €120</p>
-      <input type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
-      <button class="add-to-cart" onclick="addToCart('Billet famille')">Ajouter au panier</button>
-    </div>
-  </div>
-
+  {% endfor %}
 </div>
-
-<div class="cart-preview">
-  <h3>Contenu Panier</h3>
-  <ul id="cart-items">
-      <!--- Contenu du panier --->
-  </ul>
-</div>
-
 {% endblock %}
 {% block script %}
 <script src="{{ url_for('static', filename='billet.js') }}"></script>
 {% endblock %}
+
+

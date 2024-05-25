@@ -30,11 +30,15 @@
                     Connexion/Inscription
                 </p>  
             </a>
-            <a href="http://127.0.0.1:5000/cart">
+            <a href="#" id="cart-button">
+                <!--href="http://127.0.0.1:5000/cart" onclick="loadCart()"-->
                 <p>
                     Panier
                 </p>  
             </a>
+            <form id="cart-form" action="http://127.0.0.1:5000/cart" method="POST" style="display:none;">
+                <input type="hidden" name="cart_data" id="cart-data">
+            </form>
         </div>
     </nav>
     <body>
@@ -78,6 +82,6 @@
             <p>© 2024 Jeux Olympiques. Tous droits réservés.</p>
         </div>
     </footer>
-    
+    <script src="{{ url_for('static', filename='base.js') }}"></script>
     {% block script %}{% endblock %}
 </html>
