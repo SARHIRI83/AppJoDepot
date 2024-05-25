@@ -177,7 +177,7 @@ def register_user():
     try:
         # Insertion des données de l'utilisateur dans la base de données
         cur.execute(
-            'INSERT INTO utilisateurs (firstname, lastname, email, hashed_password, salt, clef_compte, is_admin) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+            'INSERT INTO utilisateurs (firstname, lastname, email, hashed_password, salt, account_key, is_admin) VALUES (%s, %s, %s, %s, %s, %s, %s)',
             (data['lastName'], data['firstName'], data['email'], hashed_password, salt_hex, generate_random_string(), False)
         )
         conn.commit()
@@ -218,7 +218,7 @@ def login():
         if hashed_password == user['hashed_password']:
             resp = make_response(jsonify({'success': True, 'message': 'Connexion réussie'}))
             resp.set_cookie('is_logged_in', 'true', httponly=True, secure=False)  # Set secure=True in production
-            resp.set_cookie('user_id', str(user["id"]), httponly=True, secure=False)
+            resp.set_cookie('user_id', str(user["user_id"]), httponly=True, secure=False)
             return resp
         else:
             return jsonify({'success': False, 'message': 'Mot de passe incorrect'}), 401
@@ -273,64 +273,83 @@ def change_password():
     return jsonify(message)
 
 
+#Ajoute de nouvelles offres au panier
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     data = request.get_json()
-    user_id = request.cookies.get('user_id')  # Pour s'assurer que l'utilisateur est connecté et possède un user_id valide
     ticket_type = data['ticketType']
     quantity = data['quantity']
+    #image_name = data['imageName']
+    #description = data['description']
+    #price = data['price']
+    #name = data['name']
 
-    # Dictionnaire pour mapper les types de billets aux noms d'images et descriptions
-    ticket_info = {
-        'Billet solo': {
-            'name':'Billet solo',
-            'image_name': 'billet_solo.webp',
-            'description': "Billet à usage unique pour une personne pour n'importe quelle épreuve",
-            'prix':50
-        },
-        'Billet duo': {
-            'name':'Billet duo',
-            'image_name': 'billet_duo.webp',
-            'description': 'Billet pour deux personnes, idéal pour venir en couple ou entre amis',
-            'prix':80
-        },
-        'Billet famille': {
-            'name':'Billet famille',
-            'image_name': 'billet_famille.webp',
-            'description': 'Billet familial pour quatre personnes, parfait pour une sortie en famille',
-            'prix':120
+    # Récupérer les articles actuellement dans le panier depuis le cookie ou initialiser un nouveau dictionnaire
+    cart_items_str = request.cookies.get('cart_items') or '{}'
+    cart_items = json.loads(cart_items_str)
+
+    # Ajouter la nouvelle offre au panier
+    if ticket_type in cart_items:
+        cart_items[ticket_type]['quantity'] += quantity
+    else:
+        cart_items[ticket_type] = {
+            'quantity': quantity
+            #'image_name': image_name,
+            #'description': description,
+            #'price': price,
+            #'name': name
         }
-    }
 
-    # Récupérer les informations du billet en fonction du type
-    image_name = ticket_info[ticket_type]['image_name']
-    description = ticket_info[ticket_type]['description']
-    price = ticket_info[ticket_type]['prix']
-    name = ticket_info[ticket_type]['name']
+    # Création de la réponse HTTP avec un cookie mis à jour
+    resp = make_response(jsonify({'message': 'Ajouté avec succès au panier'}))
+    resp.set_cookie('cart_items', json.dumps(cart_items))
 
+    return resp, 200
 
-    # Sauvegarde dans le panier
-    save_to_cart(user_id, ticket_type, quantity, image_name, description,price,name)
+#Mettre à jour l'offre dans le panier sans être connecté
+@app.route('/update_cart', methods=['POST'])
+def update_cart():
+    cartItems = request.get_json().get('cartItems')
+    if cartItems is None:
+        cartItems = []  # Initialise cartItems si absent
+    ticket_type = cartItems['ticketType']
+    new_quantity = int(cartItems['newQuantity'])
 
-    return jsonify({'message': 'Ajouté avec succès au panier', 'image_name': image_name, 'description': description}), 200
+    # Récupérer les articles actuellement dans le panier depuis le cookie ou initialiser un nouveau dictionnaire
+    cart_items = request.cookies.get('cart_items')
+    if cart_items:
+        cart_items = json.loads(cart_items)
+    else:
+        cart_items = {}
 
-    
+    # Mettre à jour la quantité de l'article dans le panier
+    cart_items[ticket_type] = new_quantity
 
-@app.route('/cart')
-def panier():
+    # Mettre à jour le cookie avec les nouvelles données du panier
+    resp = make_response(jsonify({'success': True, 'message': 'Quantité mise à jour'}))
+    resp.set_cookie('cart_items', json.dumps(cart_items))
+
+    return resp
+
+ # Point d'arrivée pour recevoir les articles du panier du client et répondre avec les mêmes articles
+#@app.route('/load_cart', methods=['POST'])
+# def load_cart():
+#     cart_items = request.json.get('cartItems', [])
+#     return jsonify(cart_items)
+  
+
+#@app.route('/cart')
+#def panier():
     user_id = request.cookies.get('user_id')  # Obtenir l'ID de l'utilisateur
     cart_items = load_cart_items(user_id)  # Charger les éléments du panier depuis le fichier JSON
     print("cart_items: ", cart_items)
     return render_template('cart.html', cart_items=cart_items)
 
-@app.route('/update_cart', methods=['POST'])
-def update_cart():
-    data = request.get_json()
-    user_id = request.cookies.get('user_id')
-    ticket_type = data['ticketType']
-    new_quantity = int(data['newQuantity'])
-    update_cart_file(user_id, ticket_type, new_quantity)  # Mettre à jour le fichier JSON
-    return jsonify({'success': True, 'message': 'Quantité mise à jour'})
+@app.route('/cart', methods=['GET', 'POST'])
+def panier():
+    cart_items = request.get_json().get('cartItems', [])
+    print("cart_items: ", cart_items)
+    return render_template('cart.html', cart_items=cart_items)
 
 
 if __name__ == '__main__':

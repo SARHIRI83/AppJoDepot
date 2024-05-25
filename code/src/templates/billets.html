@@ -17,8 +17,8 @@
     </div>
     <div class="ticket-action">
       <p class="price">Prix : €50</p>
-      <input type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
-      <button class="add-to-cart">Ajouter au panier</button>
+      <input id="billet-solo-nb" type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
+      <button class="add-to-cart" onclick="addToCart('Billet solo')">Ajouter au panier</button>
     </div>
   </div>
 
@@ -33,7 +33,7 @@
     <div class="ticket-action">
       <p class="price">Prix : €80</p>
       <input type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
-      <button class="add-to-cart">Ajouter au panier</button>
+      <button class="add-to-cart" onclick="addToCart('Billet duo')">Ajouter au panier</button>
     </div>
   </div>
 
@@ -48,11 +48,19 @@
     <div class="ticket-action">
       <p class="price">Prix : €120</p>
       <input type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
-      <button class="add-to-cart">Ajouter au panier</button>
+      <button class="add-to-cart" onclick="addToCart('Billet famille')">Ajouter au panier</button>
     </div>
   </div>
 
 </div>
+
+<div class="cart-preview">
+  <h3>Contenu Panier</h3>
+  <ul id="cart-items">
+      <!--- Contenu du panier --->
+  </ul>
+</div>
+
 {% endblock %}
 {% block script %}
 <script src="{{ url_for('static', filename='billet.js') }}"></script>

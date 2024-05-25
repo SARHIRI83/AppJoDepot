@@ -5,7 +5,7 @@
     <h1>Votre Panier</h1>
     {% if cart_items %}
     <div class="cart-items">
-        {% for item_key, item in cart_items.items() %}
+        {% for ticket_type, item in cart_items.items() %}
         <div class="cart-item">
             <div class="item-image">
                 <img src="{{ url_for('static', filename='images/' + item.image_name)}}" alt="{{ item.name }}">
@@ -14,11 +14,13 @@
                 <h2>{{ item.name }}</h2>
                 <p>{{ item.description }}</p>
                 <p>Prix unitaire: €{{ item.price }}</p>
+                <p>Quantité: {{ item.quantity }}</p>
             
             </div>
             <div>
                 <input type="number" value="{{ item.quantity }}" min="0" data-ticket-type="{{ item.name }}"
-                       class="quantity-input" onchange="updateQuantity(this)">
+                       class="quantity-input" onchange="updateCartDisplay(this)">
+                       
                 <p>Sous-total: €{{ item.price * item.quantity }}</p>
             </div>
         </div>
