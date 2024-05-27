@@ -1,3 +1,4 @@
+//1234467891234567
 document.getElementById('payment-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -25,10 +26,12 @@ document.getElementById('payment-form').addEventListener('submit', function(even
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                const orderDetails = encodeURIComponent(JSON.stringify(data.order_details));
-                window.location.href = `http://localhost:5000/order_summary?order_details=${orderDetails}`;
+                //const orderDetails = encodeURIComponent(JSON.stringify(data.order_details));
+                //let orderDetails = {'name':'toto', 'quantite':1}
+                let encodedOrderDetails = encodeURIComponent(JSON.stringify(cartItems));
+                window.location.href = `http://localhost:5000/order_summary?order_details=${encodedOrderDetails}`;
             } else {
-                alert('Erreur lors du traitement du paiement.');
+                alert('Erreur lors du traitement du paiement ou les détails de la commande sont manquants.');
             }
         })
         .catch(error => {

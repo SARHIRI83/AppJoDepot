@@ -13,7 +13,7 @@
     <div class="ticket-action">
       <p class="price">Prix : €{{ offer.prix }}</p>
       <input type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
-      <button class="add-to-cart" onclick="addToCart('{{ offer.type }}')">Ajouter au panier</button>
+      <button class="add-to-cart" onclick="addToCart('{{ offer.type }}', this.value)">Ajouter au panier</button>
     </div>
   </div>
   {% endfor %}

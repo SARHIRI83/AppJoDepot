@@ -10,6 +10,7 @@ import random
 import string
 import json
 import logging
+import urllib.parse
 
 # Système de Journalisation pour le suivi du comportement de l'application, la détection et la résolution des erreurs
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -81,7 +82,14 @@ def admin_required(f):
     wrap.__name__ = f.__name__
     return wrap
 
-
+def get_offre_by_name(name):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT prix FROM offre WHERE type = %s", (name,))
+    offre = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return offre
 
 
 
@@ -334,7 +342,7 @@ def delete_offer(id):
 
 
 
-from datetime import datetime
+from datetime import date, datetime
 
 @app.route('/payment')
 @login_required
@@ -407,8 +415,33 @@ def generate_transaction_key(order_date, offer_id):
 def order_summary():
     order_details = request.args.get('order_details')
     if order_details:
-        orders = json.loads(order_details)
-        return render_template('order_summary.html', orders=orders)
+        try:
+            # Décoder les caractères spéciaux dans l'URL
+            decoded_order_details = urllib.parse.unquote(order_details)
+            print("decoded_url : ", decoded_order_details)
+
+            # Convertir la chaîne JSON en objet Python
+            orders = json.loads(decoded_order_details)
+            print("commande : ", orders)  # Log pour vérifier le contenu après json.loads
+
+            date=datetime.now()
+            payment_date = date.strftime("%d/%m/%Y")
+
+            # Enrichir les données avec les prix unitaires et les prix totaux
+            for order in orders:
+                offre = get_offre_by_name(order['name'])
+                if offre:
+                    unit_price = offre[0]  # Récupérer le prix unitaire depuis le tuple
+                    order['unit_price'] = unit_price
+                    order['total_price'] = order['quantity'] * unit_price
+                else:
+                    order['unit_price'] = 0
+                    order['total_price'] = 0
+
+            return render_template('order_summary.html', orders=orders, date=payment_date)
+        except json.JSONDecodeError:
+            print("erreur pendant le json.load")
+            return render_template('order_summary.html', orders=[], error="Erreur de décodage JSON")
     return render_template('order_summary.html', orders=[])
 
 if __name__ == '__main__':

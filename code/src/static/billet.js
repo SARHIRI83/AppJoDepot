@@ -30,10 +30,10 @@
 
       if (existingItem) {
           // Mettre à jour la quantité de l'article existant
-          existingItem.quantity += quantity;
+          existingItem.quantity += parseInt(quantity);
       } else {
           // Ajouter un nouvel article au panier
-          cartItems.push({ name: ticketType, quantity: quantity });
+          cartItems.push({ name: ticketType, quantity: parseInt(quantity) });
       }
 
       // Enregistrer les articles mis à jour dans le localStorage
