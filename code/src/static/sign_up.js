@@ -56,19 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch((error) => {
             console.error('Error:', error);
         });
-        // Hashage du mot de passe
-        /*const salt = CryptoJS.lib.WordArray.random(128 / 8);
-        const hashedPassword = CryptoJS.SHA256(salt + password).toString();
-
-        console.log('Hashed Password:', hashedPassword);
-        console.log('Salt:', salt);
-        console.log('name:', firstName);
-        console.log('lastname:', lastName);
-        console.log('mail:', email);
-        console.log('passwd:', password);*/
-        
-
-        // form.submit(); // Décommentez cette ligne pour soumettre le formulaire après validation
     });
 
     function validateEmail(email) {

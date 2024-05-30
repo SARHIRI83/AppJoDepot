@@ -12,6 +12,7 @@ import json
 import logging
 import urllib.parse
 
+
 # Système de Journalisation pour le suivi du comportement de l'application, la détection et la résolution des erreurs
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -90,10 +91,6 @@ def get_offre_by_name(name):
     cursor.close()
     conn.close()
     return offre
-
-
-
-
 
 
 

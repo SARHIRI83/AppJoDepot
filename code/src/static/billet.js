@@ -1,25 +1,3 @@
-/*document.addEventListener('DOMContentLoaded', function() {
-  // Fonction pour mettre à jour le contenu du panier
-  function updateCartDisplay() {
-      const cartList = document.getElementById('cart-items');
-      if (cartList) {
-          cartList.innerHTML = ''; // Nettoyer le contenu précédent du panier
-
-          const cartItemsJSON = localStorage.getItem('cartItems') || '[]'; // Utilisation de la variable cartItemsJSON
-
-          const cartItems = JSON.parse(cartItemsJSON);
-
-          // Parcourir les articles du panier
-          cartItems.forEach(item => {
-              // Créer les éléments HTML pour afficher les détails de l'article
-              const listItem = document.createElement('li');
-              listItem.textContent = `${item.name} - Quantité: ${item.quantity}`;
-
-              // Ajouter l'élément de liste au panier
-              cartList.appendChild(listItem);
-          });
-      }
-  }*/
 
   // Fonction pour ajouter un article au panier
   function addToCart(ticketType, quantity) {
@@ -57,8 +35,7 @@
           
      });
 
-    // Appel initial pour afficher le contenu du panier au chargement de la page
-    //updateCartDisplay();
+    
     });
-//})
+
 

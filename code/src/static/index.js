@@ -48,10 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Enregistrer les articles mis à jour dans le localStorage
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    //localStorage.setItem('cartItemsJSON', JSON.stringify(cartItems)); // Ajout de cette ligne
-
-    // Mettre à jour l'affichage du panier
-    //updateCartDisplay();
 
     alert('Article ajouté au panier avec succès!');
 }

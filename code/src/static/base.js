@@ -1,26 +1,3 @@
-/*function loadCart() {
-    console.log("toto");
-    let cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    console.log('cartItems :', cartItems);
-
-    fetch('http://127.0.0.1:5000/cart', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({items: cartItems})
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.text();
-    })
-    .then(html => {
-        document.open();
-        document.write(html);
-        document.close();
-    })
-    .catch(error => console.error('Error loading cart items:', error));
-}*/
 
 document.getElementById('cart-button').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent the default link behavior
