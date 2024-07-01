@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="order-summary-container">
+    <h1>Récapitulatif de la Commande</h1>
+    {% if orders %}
+    <table>
+        <thead>
+            <tr>
+                <th>Type de Billet</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.name }}</td>
+                <td>{{ order.quantity  }}</td>
+                <td>€{{ order.unit_price }}</td>
+                <td>€{{ order.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>date de la commande : {{ date }}</p>
+    {% else %}
+    <p>Aucune commande trouvée.</p>
+    {% endif %}
+</div>
+{% endblock %}

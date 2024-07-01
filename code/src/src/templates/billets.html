@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="tickets-container">
+  {% for offer in offers %}
+  <div class="ticket-item" data-id="{{ offer.id }}">
+    <div class="ticket-image">
+      <img src="{{ url_for('static', filename='images/' + offer.image) }}" alt="{{ offer.type }}">
+    </div>
+    <div class="ticket-content">
+      <h2>{{ offer.type }}</h2>
+      <p>{{ offer.description }}</p>
+    </div>
+    <div class="ticket-action">
+      <p class="price">Prix : €{{ offer.prix }}</p>
+      <input type="number" class="ticket-quantity" value="1" min="1" max="10" aria-label="Quantité">
+      <button class="add-to-cart" onclick="addToCart('{{ offer.type }}', this.value)">Ajouter au panier</button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='billet.js') }}"></script>
+{% endblock %}
+
+

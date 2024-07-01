@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="form-container">
+    <form action="#" method="post" class="registration-form">
+        <h2>Inscription</h2>
+
+        <div class="form-group">
+            <label for="last-name">Nom</label>
+            <input type="text" id="last-name" name="last_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="first-name">Prénom</label>
+            <input type="text" id="first-name" name="first_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="confirm-password">Vérification du mot de passe</label>
+            <input type="password" id="confirm-password" name="confirm_password" required>
+        </div>
+
+        <button type="button" class="register-btn">S'inscrire</button>
+    </form>
+
+    <p class="login-redirect">Déjà inscrit ? <a href="http://127.0.0.1:5000/sign_in">Connectez-vous</a></p>
+</div>
+
+
+{% endblock %}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script src="{{ url_for('static', filename='sign_up.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div id="carousel_div">
+    <a class="carousel-control prev" href="#olympicsCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-icon">&lt;</span>
+    </a>
+    <div class="olympics-carousel">
+        <h3>Épreuves à la Une</h3>
+        <div class="carousel" id="olympicsCarousel">
+            <div class="carousel-item active">
+                <img src="https://www.e-marketing.fr/Assets/Img/BREVE/2015/7/257063/Barometre-athletisme-realise-belles-audiences-F.jpg" alt="Épreuve 1">
+                <p class="caption">Athlétisme</p>
+            </div>
+            <div class="carousel-item">
+                <img src="https://img.20mn.fr/2AUOuYtGQnmdRBx-JXVCKyk/1444x920_le-depart-est-une-des-cles-de-la-victoire-en-natation" alt="Épreuve 2">
+                <p class="caption">Natation</p>
+            </div>
+            <div class="carousel-item">
+                <img src="https://images.bfmtv.com/EJtMVz6QjahyHSD6aT5Q76VwO6A=/0x33:2048x1185/images/Simone-Biles-aux-JO-de-Tokyo-1077889.jpg" alt="Épreuve 3">
+                <p class="caption">Gymnastique</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control next" href="#olympicsCarousel" role="button" data-slide="next">
+        <span class="carousel-control-icon">&gt;</span>
+    </a>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="image-placeholder">
+            <img class="home_img" src="{{ url_for('static', filename='./images/billetSolo.webp') }}" alt="" >
+        </div>
+        <h2>Billet solo</h2>
+        <p>Prix : €50</p>
+        <button class="add-to-cart">Ajouter au panier</button>
+    </div>
+    <div class="card">
+        <div class="image-placeholder">
+            <img class="home_img" src="{{ url_for('static', filename='./images/billetDuo.webp') }}" alt="">
+        </div>
+        <h2>Billet duo</h2>
+        <p>Prix : €80</p>
+        <button class="add-to-cart">Ajouter au panier</button>
+    </div>
+    <div class="card">
+        <div class="image-placeholder">
+            <img class="home_img" src="{{ url_for('static', filename='./images/billetFamille.webp') }}" alt="">
+        </div>
+        <h2>Billet famille</h2>
+        <p>Prix : €120</p>
+        <button class="add-to-cart">Ajouter au panier</button>
+    </div>
+</div>
+<div class="olympics-intro">
+    <h2>Les Jeux Olympiques</h2>
+    <p>
+        Découvrez l'histoire passionnante des Jeux Olympiques et plongez dans l'héritage de la compétition sportive la plus prestigieuse au monde.
+    </p>
+    <br>
+    <p>
+        L'histoire des Jeux Olympiques est un riche tissu d'héroïsme, de records et d'unité internationale. Les premiers Jeux Olympiques modernes ont pris place à Athènes en 1896, mais leur héritage remonte à l'antique Grèce, où ils débutèrent en 776 avant J.-C. à Olympie. Conçus comme une célébration de l'excellence physique et de l'esprit sportif, ils incarnent des valeurs de respect, d'amitié et d'excellence qui perdurent encore aujourd'hui.
+    </p>
+    <br>
+    <p>
+        Au fil des siècles, les Jeux Olympiques se sont transformés et ont grandi, survivant à des annulations en période de guerre, à des boycotts politiques, et plus récemment, à des défis posés par une pandémie mondiale. Né
+    </p>
+    <br>
+    <p>
+        L'histoire des Jeux Olympiques est un témoignage vibrant de la persévérance humaine et du désir de surpasser les limites. L'étincelle de ce mouvement fut rallumée à Athènes en 1896, marquant la première édition des Jeux modernes, inspirée par les traditions de la Grèce antique. Depuis, les Jeux se sont imposés comme le summum de la compétition sportive, véhiculant des valeurs d'excellence, d'amitié et de respect.
+    </p>
+    <br>
+    <p>
+        C'est avec une grande fierté que la France accueille une nouvelle page de cette histoire avec les Jeux de Paris, un événement qui, au-delà du sport, célèbre l'unité et le partage culturel. La tenue des Jeux à Paris en cette année est un honneur qui réaffirme le rôle central de la France dans la promotion de l'esprit olympique à travers le monde.
+    </p>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}

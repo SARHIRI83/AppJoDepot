@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+<div class="form-container">
+    <form action="#" method="post" class="login-form">
+        <h2>Connexion</h2>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <button type="button" class="login-btn">Se connecter</button>
+    </form>
+
+    <p class="signup-redirect">Pas encore membre ? <a href="http://127.0.0.1:5000/sign_up">Inscrivez-vous</a></p>
+</div>
+
+
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='sign_in.js') }}"></script>
+{% endblock %}

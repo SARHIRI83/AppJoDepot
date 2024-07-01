@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div id="profil-container">
+    <h1>Profil</h1>
+    <div class="profile-info">
+        <p>Nom: <span id="lastName">{{prenom}}</span></p>
+        <p>Prénom: <span id="firstName">{{nom}}</span></p>
+        <p>Email: <span id="email">{{email}}</span> </p>
+        <!--<button class="button-modif" onclick="changePassword()" id="editEmailBtn">Modifier l'adresse mail</button>-->
+        <br>
+        <button class="button-modif" id="changePasswordBtn">Changer le mot de passe</button>
+        <br>
+        <div id="passwordForm" style="display:none;">
+            <input type="password" id="currentPassword" placeholder="Mot de passe actuel">
+            <input type="password" id="newPassword" placeholder="Nouveau mot de passe">
+            <button class="button-modif" onclick="changePassword()">Valider</button>
+        </div>
+        <button  class="button-modif" onclick="commandes()">Voir les commandes</button>
+        <br>
+        <button class="button-logout" onclick="logout()">Déconnecter</button>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='profil.js') }}"></script>
+{% endblock %}
