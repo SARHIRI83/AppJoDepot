@@ -206,7 +206,7 @@ Les étapes de la configuration sur PythonAnywhere sont lessuivantes :
 
 \-Répertoire de l'application : il faut spécifier lerépertoire où se trouve l’application Flask (par exemple,/home/username/myapp). Depuis l’onglet « Files », téléchargez lesfichiers de votre application et déposez les dans le répertoire.
 
-\-Fichier WSGI : il est primordial que le fichier WSGI pointevers votre application Flask (par exemple, /home/username/myapp/app.py). Ce fichierWSGI dit à PythonAnywhere comment trouver et lancer  l’application Flask.
+\-Fichier WSGI : il est primordial que le fichier WSGI pointe vers l'application Flask (par exemple, /home/username/myapp/app.py). Ce fichierWSGI dit à PythonAnywhere comment trouver et lancer  l’application Flask.
 
 4.1.1 Activation du serveur PostgreSQL
 
@@ -293,3 +293,6 @@ ADD CONSTRAINT fk\_user\_id
 FOREIGN KEY (user\_id) REFERENCES utilisateurs(user\_id);
 
 4.3 Lancement de l’application
+
+L'application est disponible sur internet en suivant le lien suivant:
+http://sarhiri83.pythonanywhere.com/
